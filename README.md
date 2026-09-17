@@ -1,75 +1,59 @@
-# React + TypeScript + Vite
+# 点字変換アプリ
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+英語・日本語の平文とUnicode点字を相互に変換する、ブラウザ上のシンプルな学習用アプリです。
 
-Currently, two official plugins are available:
+## 主な機能
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- 平文から点字への変換
+- 点字から平文への変換
+- 英語／日本語の切り替え
+- 平文と点字をクリップボードへコピー
+- 64種類の点字ボタンによる入力
+- 英字の大文字、数字、基本的な記号への対応
+- 日本語の清音、濁音、半濁音、拗音などへの対応
 
-## React Compiler
+## セットアップ
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Node.jsとpnpmをインストールした環境で、以下を実行します。
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+pnpm install
+pnpm dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+起動後、ターミナルに表示されるURLをブラウザで開いてください。
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 使い方
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. 「平文→点字」または「点字→平文」を選択します。
+2. 「英語」または「日本語」を選択します。
+3. 左右の入力欄へ変換元の文章を入力します。
+4. 「変換」ボタンを押します。
 
+「点字→平文」を選択すると点字入力ボタンが表示されます。入力結果は、それぞれのコピーボタンからクリップボードへコピーできます。
+
+## コマンド
+
+| コマンド | 内容 |
+| --- | --- |
+| `pnpm dev` | 開発サーバーを起動します |
+| `pnpm build` | TypeScriptを検査して本番用ファイルを生成します |
+| `pnpm lint` | ESLintによる静的解析を実行します |
+| `pnpm preview` | ビルド結果をローカルで確認します |
+
+## ディレクトリ構成
+
+```text
+src/
+├── App.tsx       # 変換表、変換処理、画面コンポーネント
+├── App.css       # アプリ画面のスタイル
+├── index.css     # 全体に適用するスタイル
+├── main.tsx      # Reactのエントリーポイント
+└── assets/       # 画像などの静的ファイル
 ```
+
+## 現在の対応範囲
+
+- 日本語入力は全角ひらがなを前提としています。
+- 対応表にない文字は変換せず、そのまま出力します。
+- 日本語の分かち書きや、文章中に混在する英語の自動判定には対応していません。
