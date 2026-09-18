@@ -477,7 +477,10 @@ export default function App() {
   const [brailleText, setBrailleText] = useState("");
   return (
     <>
-      <h1>点字変換アプリ</h1>
+      <div className = "header">
+        <div id = "title">点字変換アプリ</div>
+        <div id = "utCode">by ut.code();</div>
+      </div>
       <div className="isPlainButtons">
         <button className={isPlain ? "buttonBlack" : "buttonWhite"} onClick={() => trueFalse(isPlain, setIsPlain)}>平文→点字</button>
         <button className={isPlain ? "buttonWhite" : "buttonBlack"} onClick={() => trueFalse(isPlain, setIsPlain)}>点字→平文</button>
@@ -506,6 +509,48 @@ export default function App() {
       </div>
       {brailleInputButtons(isPlain, brailleText, setBrailleText)}
       <button id="convertButton" onClick={() => convertText(plainText, brailleText, isPlain, isEnglish, setPlainText, setBrailleText)}>変換</button>
+      <hr />
+      <div className = "brailleDetail">
+        <h2>点字について</h2>
+        <div>基本的に、点字は、縦3点・横2列の6つの点を組み合わせて文字を表します。</div>
+        <div>このアプリでは日本語と英語の２つの点字に対応しています。</div>
+        <h3>日本語の点字について</h3>
+        <div>日本語の点字の特徴は以下の通りです。</div>
+        <ul>
+          <li>基本的に、漢字を読みへ直してかなとして表現します。</li>
+          <li>五十音は、母音を表す点と子音を表す点の組み合わせが基本です。</li>
+          <li>濁音・半濁音・拗音は、前に専用の符号を付けます。</li>
+          <li>数字の前には「数符」、アルファベットの前には「外字符」を置きます。</li>
+          <li>大文字には「大文字符」を使用します。</li>
+          <li>日本語文中の英単語や英文は、原則として「外国語引用符」で囲みます。</li>
+          <li>読みやすくするため、文節などのまとまりごとにマスを空ける「分かち書き」を行います。</li>
+          <li>句読点やカッコにも専用の点字符号があります。</li>
+        </ul>
+        <div>日本語の場合、点字は単純な文字の置き換えではなく、読み方、分かち書き、数字や外国語への切り替えなどを含む独自の表記体系です。そのため、実際の日本語文を点字に変換する際には、漢字を読みに直したり、分かち書きをする等の正規化処理が必要です。</div>
+        <h3>英語の点字について</h3>
+         <ul>
+          <li>アルファベットごとに対応する点字があります。</li>
+          <li>大文字の前には大文字符⠠を付けます。</li>
+          <li>数字の前には数符⠼を付け、a〜jと同じ形を数字として読みます。</li>
+          <li>ピリオド、コンマ、疑問符などにも専用の点字があります。</li>
+          <li>フルスペルで表す第１級点字と、よく使う単語や文字列を短縮する第２級点字、第３級点字があります。</li>
+          <li>現在は、英語圏で表記を統一したUEB（Unified English Braille）が広く使用されています。</li>
+        </ul>
+        <div>英語の場合、第１級点字であれば単純な点字への置き換えで済みますが、第２級以降だと特定の単語を省略する処理が必要になります。</div>
+      </div>
+      <hr />
+      <div className = "appDetail">
+        <h2>このアプリについて</h2>
+        <div>英語・日本語の平文とUnicode点字を相互に変換する、ブラウザ上のシンプルな学習用アプリです。</div>
+        <div>現在の仕様は以下の通りです。</div>
+        <ul>
+          <li>日本語入力は全角ひらがなを前提としています。また、対応している点字は50音に加えて、数字、撥音（っ）、促音（ん）、長音（ー）、読点（、）句点（。）、疑問符（？）、感嘆符（！）、中点（・）、括弧（（））、鉤括弧（「」）です。</li>
+          <li>英語入力は第１級点字にのみ対応し、第２級以降で用いられる特定の単語の略（例：but→bなど）には対応していません。</li>
+          <li>対応表にない文字は変換せず、そのまま出力します。</li>
+          <li>日本語の分かち書き（文のまとまりごとに区切ること）や、文章中に混在する英語の自動判定には対応していません。</li>
+        </ul>
+      </div>
+      <div className = "footer">このアプリでは一部の機械的な処理や点字の仕様の調査にCodexを用いています。</div>
     </>
   )
 }

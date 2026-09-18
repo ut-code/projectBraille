@@ -1,6 +1,18 @@
-h1 {
-  text-align: center;
-  margin-top: 20px;
+.header {
+  background-color: #dddddd;
+  margin-top: 0px;
+  padding: 5px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2)
+}
+
+#title {
+  font-size: 22px;
+  font-weight: 300;
+}
+
+#utCode {
+  font-size: 14px;
+  font-weight: 100;
 }
 
 .buttonBlack{
@@ -33,25 +45,28 @@ h1 {
 
 .isPlainButtons, .isEnglishButtons {
   display: flex;
-  margin-left: 69dvw;
+  justify-self: end;
   margin-top: 10px;
+  margin-right: 20px;
 }
 
-.inputBoxes {
-  display: flex;
-  gap: 40px;
+.inputBoxes, .copyButtons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 360px));
+  padding-inline: 20px;
+  column-gap: 40px;
   justify-content: center;
   margin-top: 20px;
 }
 
-#inputBoxPlain {
-  width: 360px;
+#inputBoxPlain, #inputBoxBraille {
+  width: 100%;
   height: 180px;
+  box-sizing: border-box;
 }
 
-#inputBoxBraille {
-  width: 360px;
-  height: 180px;
+.copyButtons button {
+  justify-self: start;
 }
 
 .brailleInputButtonsRow {
@@ -77,13 +92,6 @@ h1 {
   background-color: #efefef;
 }
 
-.copyButtons{
-  display: flex;
-  gap: 40px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
 .plainCopyButton, .brailleCopyButton {
   background-color: white;
   color: black;
@@ -95,4 +103,22 @@ h1 {
 
 .plainCopyButton:hover, .brailleCopyButton:hover {
   background-color: #efefef;
+}
+
+hr {
+  width: 95%;
+}
+
+.appDetail, .brailleDetail {
+  margin: 20px;
+}
+
+.footer {
+  color: #707070;
+  background-color: #dddddd;
+  margin-bottom: 0px;
+  padding: 5px;
+  box-shadow: 0px -2px 2px rgba(0, 0, 0, 0.2);
+  font-size: 10px;
+  text-align: center;
 }
