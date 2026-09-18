@@ -75,6 +75,7 @@ const englishBraille: Record<string, string> = {
     "7": "⠼⠛",
     "8": "⠼⠓",
     "9": "⠼⠊",
+    "0": "⠼⠚"
   };
   const japaneseBraille: Record<string, string> = {
     "あ": "⠁",
@@ -142,6 +143,7 @@ const englishBraille: Record<string, string> = {
     "７": "⠼⠛",
     "８": "⠼⠓",
     "９": "⠼⠊",
+    "０": "⠼⠪",
     "が": "⠐⠡",
     "ぎ": "⠐⠣",
     "ぐ": "⠐⠩",
@@ -220,15 +222,24 @@ function englishToBraille(plainText: string): string {
 }
 
 function brailleToEnglish(brailleText: string): string {
-  const plainText: string = brailleText.split('').map((char) => {return (Object.keys(englishBraille).find((key) => englishBraille[key] === char) ?? char)}).join('');
-  return plainText;
+  let plainText: string[] = brailleText.split('');
+  for (let i = 0; i < brailleText.length - 1; i++) {
+    if (plainText[i] === "⠠" || plainText[i] === "⠐" || plainText[i] === "⠼") {
+      plainText.splice(i, 2, Object.values(englishBraille).find((value) => value === (plainText[i] + plainText[i + 1])) ?? (plainText[i] + plainText[i + 1]));
+    }
+  } //２文字分の点字の処理
+  plainText = plainText.map((braille) => {return (Object.keys(englishBraille).find((key) => englishBraille[key] === braille) ?? braille)});
+  return plainText.join('');
 }
 
 function japaneseToBraille(plainText: string): string {
   let brailleText: string[] = plainText.split('');
   for (let i = 0; i < brailleText.length - 1; i++) {
     if (brailleText[i + 1] === "ゃ" || brailleText[i + 1] === "ゅ" || brailleText[i + 1] === "ょ") {
-      brailleText.splice(i, 2, japaneseBraille[brailleText[i] + brailleText[i + 1]]);
+      const combined = japaneseBraille[brailleText[i] + brailleText[i + 1]];
+      if (combined !== undefined) {
+        brailleText.splice(i, 2, combined);
+      }
     }
   } //拗音の処理
   brailleText = brailleText.map((char) => {return (japaneseBraille[char] ?? char)});
@@ -236,8 +247,14 @@ function japaneseToBraille(plainText: string): string {
 }
 
 function brailleToJapanese(brailleText: string): string {
-  const plainText: string = brailleText.split('').map((char) => {return (Object.keys(japaneseBraille).find((key) => japaneseBraille[key] === char) ?? char)}).join('');
-  return plainText;
+  let plainText: string[] = brailleText.split('');
+  for (let i = 0; i < brailleText.length - 1; i++) {
+    if (plainText[i] === "⠼" || plainText[i] === "⠐" || plainText[i] === "⠠" || plainText[i] === "⠈" || plainText[i] === "⠘" || plainText[i] === "⠨") {
+      plainText.splice(i, 2, Object.values(japaneseBraille).find((value) => value === (plainText[i] + plainText[i + 1])) ?? (plainText[i] + plainText[i + 1]));
+    }
+  } //２文字分の点字の処理
+  plainText = plainText.map((braille) => {return (Object.keys(japaneseBraille).find((key) => japaneseBraille[key] === braille) ?? braille)});
+  return plainText.join('');
 }
 
 function convertText(plainText: string, brailleText: string, isPlain: boolean, isEnglish: boolean, setPlainText: (text: string) => void, setBrailleText: (text: string) => void): void {
@@ -258,7 +275,7 @@ function convertText(plainText: string, brailleText: string, isPlain: boolean, i
 
 function brailleInputButtons(isPlain: boolean, brailleText: string, setBrailleText: (text: string) => void): React.ReactElement | undefined {
   const brailleList: string[] = [];
-  for (let i = 0x2800; i <= 0x28FF; i++) {
+  for (let i = 0x2800; i <= 0x283F; i++) {
     brailleList.push(String.fromCodePoint(i));
   }
   if (!isPlain) {
@@ -545,7 +562,7 @@ export default function App() {
         <div>英語・日本語の平文とUnicode点字を相互に変換する、ブラウザ上のシンプルな学習用アプリです。</div>
         <div>現在の仕様は以下の通りです。</div>
         <ul>
-          <li>日本語入力は全角ひらがなを前提としています。また、対応している点字は50音に加えて、数字、撥音（っ）、促音（ん）、長音（ー）、読点（、）句点（。）、疑問符（？）、感嘆符（！）、中点（・）、括弧（（））、鉤括弧（「」）です。</li>
+          <li>日本語入力は全角ひらがなを前提としています。また、対応している点字は50音に加えて、数字、促音（っ）、撥音（ん）、長音（ー）、読点（、）句点（。）、疑問符（？）、感嘆符（！）、括弧（（））、鉤括弧（「」）です。</li>
           <li>英語入力は第１級点字にのみ対応し、第２級以降で用いられる特定の単語の略（例：but→bなど）には対応していません。</li>
           <li>対応表にない文字は変換せず、そのまま出力します。</li>
           <li>日本語の分かち書き（文のまとまりごとに区切ること）や、文章中に日本語と英語が混在していた場合の自動判定には対応していません。</li>
